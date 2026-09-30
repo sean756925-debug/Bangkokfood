@@ -117,12 +117,12 @@ footer{font-size:12.5px;color:var(--muted)}
   </header>
 
   <div class="warn" role="note">
-    <strong>日期對好了：10/4（日）到 10/8（四）。公休日這樣處理：</strong>
+    <strong>10/4（日）到 10/8（四）。已訂位和公休日：</strong>
     <ul>
-      <li>Jay Fai 只開週三到週六，這趟只有 Day 4（10/7 週三）吃得到，放在 Day 4 早上當可選。Day 2 週一改吃隔壁的鬼門炒河粉。</li>
-      <li>Threads 那攤香蕉煎餅週一、週二休，從 Day 3（週二）移到 Day 4（週三）。</li>
-      <li>Somsak Pu Ob 週一休，Day 3 是週二，照常。</li>
-      <li>建興 Siam Square One 已訂 10/4（日）18:30。</li>
+      <li>已訂：建興 Siam Square One 10/4 18:30；Le Du Kaan 10/6 17:30 🎂</li>
+      <li>飯店：10/4–10/5 Canopy by Hilton（Asok），10/6–10/7 千禧希爾頓（河西）。</li>
+      <li>Jay Fai 只開週三到週六，這趟只有 Day 4（10/7 週三）吃得到。</li>
+      <li>Threads 那攤香蕉煎餅週一、週二休，排在 Day 4（週三）16:00 開賣後。</li>
     </ul>
   </div>
 
@@ -154,16 +154,16 @@ footer{font-size:12.5px;color:var(--muted)}
 
 <script>
 const DAYS=[
-  {id:1,date:"10/4 日",c:"--d1",title:"抵達・CentralWorld・建興酒家・牛仔街",sum:"Asok 放行李，Siam 逛街吃蟹，晚上回 Asok"},
-  {id:2,date:"10/5 一",c:"--d2",title:"鄭王廟・老城區吃一整天",sum:"河西早晨拍廟，中午過河吃老城名店"},
-  {id:3,date:"10/6 二",c:"--d3",title:"ICONSIAM・Mahanakhon 最高樓",sum:"河岸一路吃到夜景"},
-  {id:4,date:"10/7 三",c:"--d4",title:"嵩越路咖啡廳・香蕉煎餅・Lay Lao",sum:"中國城老屋咖啡廳，傍晚 MRT 到 Silom 吃煎餅，晚餐 Thong Lo"},
+  {id:1,date:"10/4 日",c:"--d1",title:"抵達・CentralWorld・建興酒家・牛仔街",sum:"住 Canopy by Hilton（Asok）。Siam 逛街吃蟹，晚上回 Asok"},
+  {id:2,date:"10/5 一",c:"--d2",title:"鄭王廟・老城小吃・Lay Lao",sum:"MRT 藍線一路坐到老城，晚上回 Asok 附近吃 Lay Lao"},
+  {id:3,date:"10/6 二",c:"--d3",title:"生日快樂 🎂 嵩越路・Mahanakhon・Le Du Kaan",sum:"換飯店到千禧希爾頓。下午逛嵩越路，傍晚上最高樓，17:30 頂樓慶生"},
+  {id:4,date:"10/7 三",c:"--d4",title:"老城咖啡廳・香蕉煎餅・ICONSIAM",sum:"臥佛寺旁的河景咖啡廳，傍晚 Silom 吃煎餅，晚上回飯店旁吃蟹逛 ICONSIAM"},
   {id:5,date:"10/8 四",c:"--d5",title:"回家",sum:"10:50 的航班，一早退房直接去機場"}
 ];
 const G=q=>"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);
 // n is assigned below in trip order; lat/lng approximate
 const SPOTS={
-  canopy:{day:1,name:"Canopy by Hilton",sub:"飯店・Asok",eat:"",hours:"12:00 寄放行李、15:00 入住",lat:13.7392,lng:100.5585,q:"Canopy by Hilton Bangkok",src:"住宿"},
+  canopy:{day:1,name:"Canopy by Hilton",sub:"飯店・Asok・10/4–10/5 兩晚",eat:"",hours:"12:00 寄放行李、15:00 入住",lat:13.7392,lng:100.5585,q:"Canopy by Hilton Bangkok",src:"住宿"},
   asoklunch:{day:1,name:"Asok 泰式小吃",sub:"午餐",eat:"想吃麵的話，你地圖上的榮泰魚蛋粉在 Sukhumvit 26，BTS 坐一站到 Phrom Phong",hours:"",lat:13.7368,lng:100.5625,q:"Thai street food Asok Bangkok",src:"你指定"},
   centralworld:{day:1,name:"CentralWorld",sub:"BTS Chit Lom / Siam",eat:"逛街購物",hours:"10:00–22:00",lat:13.7466,lng:100.5393,q:"CentralWorld Bangkok",src:"你指定"},
   somboon:{day:1,name:"建興酒家 Somboon Seafood",sub:"Siam Square One・已訂 18:30",eat:"咖哩炒蟹、炸魚、蝦餅",hours:"每日 11:00 起",lat:13.7449,lng:100.5334,q:"Somboon Seafood Siam Square One",src:"已訂位"},
@@ -174,18 +174,24 @@ const SPOTS={
   mrjo:{day:2,name:"Mr. Jo 脆皮燒肉",sub:"Thonburi",eat:"脆皮燒肉飯 80฿、豬雜粿條 80฿",hours:"上午開，賣完就收",lat:13.7680,lng:100.4770,q:"Mr. Jo Crispy Pork Bangkok",src:"肥波 5/5"},
   maeprapha:{day:2,name:"Mae Prapha 泰式脆餅",sub:"Phra Sumen Rd・近考山路",eat:"Khanom Bueang 甜鹹脆餅",hours:"每日 09:00–18:00",lat:13.7627,lng:100.4960,q:"Mae Prapha Crispy Pancake Bangkok",src:"米其林推薦"},
   kpanich:{day:2,name:"K. Panich 芒果糯米飯",sub:"Tanao Rd",eat:"80 年配方芒果糯米飯 125฿",hours:"多數日 07:00–18:00",lat:13.7547,lng:100.4988,q:"K. Panich 431-433 Tanao Road Bangkok",src:"必比登"},
-  bunloet:{day:2,opt:true,name:"Bunloet 炭烤豬肉雞蛋麵",sub:"Nakhon Sawan Rd",eat:"炭烤叉燒雞蛋麵、豬骨湯",hours:"每日 10:00–17:00",lat:13.7625,lng:100.5052,q:"Bunloet 360 Soi Nakhon Sawan 8 Bangkok",src:"必比登"},
-  thipsamai:{day:2,name:"鬼門炒河粉 Thipsamai",sub:"Maha Chai Rd",eat:"蛋包泰式炒河粉 150฿",hours:"約 09:00–24:00",lat:13.7532,lng:100.5052,q:"Thipsamai Pad Thai Bangkok",src:"肥波 4/5"},
+  laylao:{day:2,name:"Lay Lao",sub:"Sukhumvit 36・BTS Thong Lo",eat:"醬燒小卷 265฿、醬燒松阪豬 165฿",hours:"午晚餐",lat:13.7213,lng:100.5785,q:"Lay Lao Bangkok",src:"肥波 5/5"},
+  millennium:{day:3,name:"曼谷千禧希爾頓飯店",sub:"Millennium Hilton・河西・10/6–10/7 兩晚",eat:"飯店有免費接駁船到對岸 Sathorn / Si Phraya 碼頭",hours:"",lat:13.7300,lng:100.5112,q:"Millennium Hilton Bangkok",src:"住宿"},
   charoen:{day:3,name:"Charoen Saeng 豬腳",sub:"Charoen Krung Soi 49",eat:"中藥滷豬腳飯（1959 年配方）",hours:"每日 07:00–13:00",lat:13.7245,lng:100.5163,q:"Charoen Saeng Silom Bangkok",src:"米其林推薦"},
-  iconsiam:{day:3,name:"ICONSIAM",sub:"河西・SookSiam 美食街在 G 樓",eat:"水上市場風美食街",hours:"10:00–22:00",lat:13.7266,lng:100.5105,q:"ICONSIAM",src:"你指定"},
-  somsak:{day:3,name:"Somsak Pu Ob 砂鍋粉絲蟹",sub:"Charoen Rat Soi 1・近 BTS Wongwian Yai",eat:"砂鍋粉絲焗蟹／蝦",hours:"週二–週日 16:30–21:00",lat:13.7222,lng:100.5020,q:"Somsak Pu Ob Charoen Rat Bangkok",src:"必比登",alert:"週一休"},
-  mahanakhon:{day:3,name:"Mahanakhon SkyWalk",sub:"BTS Chong Nonsi",eat:"314m 玻璃地板觀景台",hours:"約 10:00–19:00（出發前確認末場）",lat:13.7236,lng:100.5283,q:"Mahanakhon SkyWalk",src:"你指定"},
+  songwat:{day:3,name:"嵩越路 Song Wat Road",sub:"中國城・離千禧希爾頓很近",eat:"老屋咖啡廳、選物店、河岸",hours:"店家多約 10:00–18:00",lat:13.7395,lng:100.5085,q:"Song Wat Road Bangkok",src:"你指定"},
+  ann:{day:3,opt:true,name:"Ann Guay Tiew Kua Gai",sub:"Charoen Krung（出發前確認位置）",eat:"雞肉炒河粉 50฿",hours:"",lat:13.7360,lng:100.5130,q:"Ann Guay Tiew Kua Gai Bangkok",src:"肥波 4.5/5"},
+  mahanakhon:{day:3,name:"Mahanakhon SkyWalk",sub:"BTS Chong Nonsi",eat:"314m 玻璃地板觀景台",hours:"10:00–19:00，最後入場 18:30",lat:13.7236,lng:100.5283,q:"Mahanakhon SkyWalk",src:"你指定"},
+  ledukaan:{day:3,name:"Le Du Kaan 🎂",sub:"The Empire 56F・BTS Chong Nonsi 5 號出口",eat:"Chef Ton 的泰式頂樓餐廳，慶生晚餐",hours:"晚餐 17:00–01:00",lat:13.7216,lng:100.5294,q:"Le Du Kaan The Empire Bangkok",src:"已訂 17:30"},
   jayfai:{day:4,opt:true,name:"Jay Fai 痣姐",sub:"Maha Chai Rd",eat:"蟹肉蛋捲 1400฿、醉炒飯 600฿",hours:"週三–週六 09:00–19:30",lat:13.7527,lng:100.5047,q:"Jay Fai 327 Maha Chai Road Bangkok",src:"米其林一星",alert:"這趟只有今天開，要排很久"},
-  songwat:{day:4,name:"嵩越路 Song Wat Road",sub:"中國城・MRT Wat Mangkon",eat:"老屋咖啡廳、選物店、河岸",hours:"店家多約 10:00–18:00",lat:13.7395,lng:100.5085,q:"Song Wat Road Bangkok",src:"你指定"},
-  ann:{day:4,opt:true,name:"Ann Guay Tiew Kua Gai",sub:"Charoen Krung（出發前確認位置）",eat:"雞肉炒河粉 50฿",hours:"",lat:13.7360,lng:100.5130,q:"Ann Guay Tiew Kua Gai Bangkok",src:"肥波 4.5/5"},
-  puy:{day:4,name:"Puy 脆脆香蕉煎餅",sub:"BTS Sala Daeng・Threads 截圖那攤",eat:"香蕉蛋 roti、斑蘭 roti",hours:"傍晚開賣，週一、二休",lat:13.7288,lng:100.5345,q:"Puy Roti Lady Silom Bangkok",src:"Threads 截圖"},
-  laylao:{day:4,name:"Lay Lao",sub:"Sukhumvit 36・BTS Thong Lo",eat:"醬燒小卷 265฿、醬燒松阪豬 165฿",hours:"午晚餐",lat:13.7213,lng:100.5785,q:"Lay Lao Bangkok",src:"肥波 5/5"},
+  thipsamai:{day:4,name:"鬼門炒河粉 Thipsamai",sub:"Maha Chai Rd・痣姐隔壁",eat:"蛋包泰式炒河粉 150฿",hours:"約 09:00–24:00",lat:13.7532,lng:100.5052,q:"Thipsamai Pad Thai Bangkok",src:"肥波 4/5"},
+  watpho:{day:4,name:"臥佛寺 Wat Pho",sub:"MRT Sanam Chai",eat:"46m 金色臥佛",hours:"08:00–18:30",lat:13.7465,lng:100.4935,q:"Wat Pho",src:"老城推薦"},
+  vivi:{day:4,name:"ViVi The Coffee Place",sub:"Tha Tien・河邊",eat:"河岸座位正對鄭王廟",hours:"",lat:13.7453,lng:100.4905,q:"ViVi The Coffee Place Bangkok",src:"咖啡廳推薦"},
+  bluewhale:{day:4,name:"Blue Whale Maharaj",sub:"Maha Rat Rd・臥佛寺旁",eat:"招牌藍色蝶豆花拿鐵 80–180฿",hours:"",lat:13.7443,lng:100.4927,q:"Blue Whale Maharaj Bangkok",src:"咖啡廳推薦"},
+  floral:{day:4,opt:true,name:"Floral Cafe",sub:"Pak Khlong Talat 花市",eat:"藏在花市裡的花藝咖啡廳",hours:"",lat:13.7410,lng:100.4965,q:"Floral Cafe Napasorn Bangkok",src:"咖啡廳推薦"},
+  puy:{day:4,name:"Puy 脆脆香蕉煎餅",sub:"Silom × Sala Daeng 路口・Threads 截圖那攤",eat:"香蕉蛋 roti、斑蘭 roti",hours:"週三–週日 16:00–22:00",lat:13.7288,lng:100.5345,q:"Puy Roti Lady Silom Bangkok",src:"Threads 截圖"},
+  somsak:{day:4,name:"Somsak Pu Ob 砂鍋粉絲蟹",sub:"Charoen Rat Soi 1・離飯店很近",eat:"砂鍋粉絲焗蟹／蝦",hours:"週二–週日 16:30–21:00",lat:13.7222,lng:100.5020,q:"Somsak Pu Ob Charoen Rat Bangkok",src:"必比登"},
+  iconsiam:{day:4,name:"ICONSIAM",sub:"飯店隔壁・SookSiam 美食街在 G 樓",eat:"逛街、河岸夜景",hours:"10:00–22:00",lat:13.7266,lng:100.5105,q:"ICONSIAM",src:"你指定"},
   goang:{day:0,name:"紅大哥水門雞飯 Go-Ang",sub:"Pratunam・機場快線 Ratchaprarop 站旁",eat:"海南雞飯 95฿、滷肉 90฿",hours:"早上就開（出發前確認）",lat:13.7507,lng:100.5420,q:"Go-Ang Pratunam Chicken Rice Bangkok",src:"肥波 4/5"},
+  bunloet:{day:0,name:"Bunloet 炭烤豬肉雞蛋麵",sub:"Nakhon Sawan Rd",eat:"炭烤叉燒雞蛋麵、豬骨湯",hours:"每日 10:00–17:00",lat:13.7625,lng:100.5052,q:"Bunloet 360 Soi Nakhon Sawan 8 Bangkok",src:"必比登"},
   rungrueang:{day:0,name:"榮泰魚蛋粉 Rung Rueang",sub:"Sukhumvit 26・BTS Phrom Phong",eat:"乾拌辣魚蛋麵 60฿、豬肉清湯 60฿",hours:"早上開到下午",lat:13.7262,lng:100.5692,q:"Rung Rueang Pork Noodles Bangkok",src:"肥波 4.5/5"},
   jeho:{day:0,name:"Jeh O Chula 媽媽麵",sub:"Banthat Thong 一帶",eat:"酸辣媽媽麵 300฿、鮭魚沙拉 300฿",hours:"傍晚開到深夜",lat:13.7395,lng:100.5232,q:"Jeh O Chula Bangkok",src:"肥波 3/5"},
   tang:{day:0,name:"Tang Sui Heng 砂鍋燉鴨",sub:"Banthat Thong Rd",eat:"砂鍋燉鴨、鴨雜、鴨血",hours:"每日 10:30–19:30",lat:13.7430,lng:100.5212,q:"Tang Sui Heng 649 Banthat Thong Road Bangkok",src:"米其林推薦"},
@@ -208,42 +214,56 @@ const PLAN={
   ["","healthland","","另一個選擇，走路約 5 分鐘，先預約比較保險"],
  ],
  2:[
-  ["07:45","watarun","","8 點開門前後人最少、光線最好。從 Tha Tien 碼頭搭渡輪過河"],
+  ["07:00","t","MRT Sukhumvit → Sanam Chai","藍線直達不用轉車，約 30 分鐘。走到 Tha Tien 碼頭搭渡輪過河"],
+  ["07:45","watarun","","8 點開門前後人最少、光線最好"],
   ["09:30","mrjo","","Grab 約 15 分鐘。你地圖上 5/5 的脆皮燒肉，早點去才不會賣完"],
   ["11:00","t","Grab 過河回老城","約 20 分鐘"],
   ["11:30","maeprapha","","考山路旁邊，順便逛 Khao San"],
   ["13:00","kpanich","","芒果糯米飯當午後甜點"],
-  ["14:00","bunloet","","還吃得下再去，17:00 收"],
-  ["17:00","thipsamai","","晚餐。痣姐就在隔壁，但今天週一公休"],
+  ["14:00","t","回 Asok 飯店休息","MRT Sam Yot → Sukhumvit，約 25 分鐘"],
+  ["18:30","laylao","","BTS Asok → Thong Lo 2 站。你地圖上 5/5，醬燒小卷必點"],
  ],
  3:[
-  ["08:30","charoen","","BTS Saphan Taksin 附近，13:00 就收"],
-  ["09:45","t","Sathorn 碼頭 → ICONSIAM","免費接駁船，約 10 分鐘"],
-  ["10:00","iconsiam","","逛街，SookSiam 美食街當午餐"],
-  ["16:30","somsak","","Grab 約 10 分鐘，一開門就到，吃完剛好趕夕陽"],
-  ["17:30","mahanakhon","","10 月初曼谷日落約 18:05，白天夜景都看得到"],
+  ["09:30","canopy","","退房"],
+  ["09:40","t","Grab 到千禧希爾頓","約 35 分鐘"],
+  ["10:15","millennium","","先寄放行李"],
+  ["10:30","t","飯店接駁船到對岸","免費，約 5 分鐘"],
+  ["10:45","charoen","","早午餐，13:00 就收"],
+  ["12:00","songwat","","Grab 約 10 分鐘。老屋咖啡廳、選物店很多，逛到 14:30"],
+  ["","ann","","想吃點鹹的再去，出發前先在 Google Maps 確認位置"],
+  ["14:45","millennium","","回飯店 Check-in，換衣服準備慶生"],
+  ["16:00","t","接駁船到 Sathorn 碼頭 → BTS Saphan Taksin → Chong Nonsi","BTS 2 站，全程約 25 分鐘"],
+  ["16:30","mahanakhon","","買 Sunset 時段的票，看到 17:15。時間緊就跳過，Le Du Kaan 本身就是頂樓"],
+  ["17:30","ledukaan","","走路約 7 分鐘。10 月初日落約 18:05，剛好在頂樓看夕陽。生日快樂 🎂"],
+  ["20:00","t","Grab 回飯店","約 20 分鐘；還有力氣就去 ICONSIAM 河邊散步"],
  ],
  4:[
-  ["09:00","jayfai","","這趟唯一有開的一天。早上去登記排隊，常要等 2–3 小時；不想排就跳過"],
-  ["12:00","songwat","","咖啡廳日主場。老屋咖啡廳、選物店很多，挑 1–2 間慢慢坐"],
-  ["","ann","","想吃點鹹的再去，出發前先在 Google Maps 確認位置"],
-  ["16:30","t","MRT Wat Mangkon → Si Lom","藍線 3 站，Si Lom 站就是 BTS Sala Daeng"],
-  ["17:00","puy","","你截圖那攤「人生香蕉煎餅」，週三有開"],
-  ["18:00","t","BTS Sala Daeng → Siam → Thong Lo","在 Siam 轉車，約 25 分鐘"],
-  ["18:30","laylao","","你地圖上 5/5，醬燒小卷必點"],
+  ["08:30","t","Grab 到老城","約 20 分鐘"],
+  ["08:45","jayfai","","今天週三有開。先去登記排隊拿號碼，再去逛，時間到再回來吃"],
+  ["09:30","watpho","","臥佛寺，老城最值得看的一間"],
+  ["10:30","vivi","","走路 5 分鐘，河邊座位正對鄭王廟"],
+  ["11:30","bluewhale","","臥佛寺旁邊，拍藍色拿鐵"],
+  ["12:30","thipsamai","","Jay Fai 排不到就吃這間，就在隔壁"],
+  ["14:00","floral","","花市裡的咖啡廳，還想坐就去"],
+  ["15:30","t","MRT Sanam Chai → Si Lom","藍線直達約 15 分鐘，Si Lom 站就是 BTS Sala Daeng"],
+  ["16:00","puy","","你截圖那攤「人生香蕉煎餅」，16:00 開賣"],
+  ["17:30","t","Grab 回河西","約 25 分鐘，下班時間會塞"],
+  ["18:00","somsak","","離飯店很近，砂鍋粉絲蟹"],
+  ["19:30","iconsiam","","飯店隔壁，逛到 22:00，河岸夜景很漂亮"],
  ],
  5:[
-  ["06:30","canopy","","退房。前一晚把行李整理好，早餐到機場再吃"],
-  ["06:40","t","Grab 到蘇凡納布機場","清晨不塞車，約 30–40 分鐘。也可以搭 MRT Sukhumvit → Phetchaburi，轉機場快線 Makkasan 站"],
+  ["06:30","millennium","","退房。前一晚把行李整理好，早餐到機場再吃"],
+  ["06:40","t","Grab 到蘇凡納布機場","從河西出發，清晨約 40–50 分鐘"],
   ["07:30","t","抵達機場、報到","起飛前 3 小時到。有買東西要退稅的話，先去 VAT Refund 櫃檯蓋章"],
   ["08:30","t","機場早餐、過安檢","出關後登機門比較遠，預留時間走過去"],
   ["10:50","t","起飛 ✈️ 回家",""],
  ]
 };
 const SPARE=[
-  {k:"goang",why:"原本排 Day 5，但航班太早來不及。在 Pratunam，Day 1 逛完 CentralWorld 走路約 10 分鐘"},
+  {k:"goang",why:"在 Pratunam，Day 1 逛完 CentralWorld 走路約 10 分鐘"},
+  {k:"bunloet",why:"Day 2 在老城還吃得下的話，17:00 收"},
   {k:"rungrueang",why:"離 Asok 一站，Day 1 午餐可以選這間"},
-  {k:"roots",why:"Day 4 想換到 Sukhumvit 喝咖啡的話"},
+  {k:"roots",why:"想在 Sukhumvit 喝咖啡的話"},
   {k:"jeho",why:"深夜才熱鬧，哪天晚上還餓就去"},
   {k:"tang",why:"跟 Jeh O 同一條街，可以一起吃"},
   {k:"polo",why:"近 Lumphini 公園，Day 4 吃完煎餅順路"},
@@ -278,7 +298,7 @@ function drawMap(){
   for(const [k,p] of Object.entries(SPOTS)){
     const x=px(p.lng),y=py(p.lat);
     const lx=(k==="thipsamai"||k==="cowboy"||k==="cafe2")?x+13:x+13, ly=(k==="thipsamai")?y+14:(k==="jayfai"?y-8:y+4);
-    h+=`<g class="pin" data-day="${p.day}" data-k="${k}" tabindex="0"><title>${p.name}</title><circle cx="${x}" cy="${y}" r="10" fill="${col(p.day)}"/><text class="n" x="${x}" y="${y}">${p.n}</text>${p.opt||["asoklunch","canopy"].includes(k)?"":`<text class="maplabel" x="${lx}" y="${ly}">${p.name.split(" ")[0]}</text>`}</g>`;
+    h+=`<g class="pin" data-day="${p.day}" data-k="${k}" tabindex="0"><title>${p.name}</title><circle cx="${x}" cy="${y}" r="10" fill="${col(p.day)}"/><text class="n" x="${x}" y="${y}">${p.n}</text>${p.opt||["asoklunch","canopy","millennium","vivi","bluewhale","mahanakhon"].includes(k)?"":`<text class="maplabel" x="${lx}" y="${ly}">${p.name.split(" ")[0]}</text>`}</g>`;
   }
   s.innerHTML=h;
   s.querySelectorAll(".pin").forEach(g=>{
