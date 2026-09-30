@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>曼谷吃爆五日</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: river-map hero + day tabs; each day a timed stop list; all-spots index below. */
+:root{
+  --paper:#F1F4F2; --card:#FFFFFF; --ink:#18302E; --muted:#5B6F6C; --line:#D5DEDA;
+  --river:#8FC3C9; --land:#E4EBE7;
+  --d1:#C2412D; --d2:#B8860B; --d3:#2F6FB3; --d4:#7A4FA0; --d5:#2E8B57; --spare:#8A9895;
+  --warn-bg:#FFF4D6; --warn-ink:#7A5200;
+  --f-display:"LXGW WenKai TC","Noto Sans TC","PingFang TC","Microsoft JhengHei",serif;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  color-scheme:dark;
+  --paper:#101A19; --card:#172423; --ink:#E6EFEC; --muted:#9AB0AB; --line:#2A3B39;
+  --river:#2D5B62; --land:#1B2A28;
+  --d1:#F07560; --d2:#E0B44A; --d3:#6FA6E8; --d4:#B793DA; --d5:#5CC48A; --spare:#7F918D;
+  --warn-bg:#3A2F12; --warn-ink:#F2D58A;
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#101A19; --card:#172423; --ink:#E6EFEC; --muted:#9AB0AB; --line:#2A3B39;
+  --river:#2D5B62; --land:#1B2A28;
+  --d1:#F07560; --d2:#E0B44A; --d3:#6FA6E8; --d4:#B793DA; --d5:#5CC48A; --spare:#7F918D;
+  --warn-bg:#3A2F12; --warn-ink:#F2D58A;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65;padding-inline:16px;padding-block:28px 64px}
+.wrap{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;font-weight:700}
+h1{font-size:clamp(30px,5vw,44px);line-height:1.15}
+h2{font-size:24px}
+h3{font-size:18px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+header p{margin:6px 0 0;color:var(--muted);max-width:62ch}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid var(--d3);outline-offset:2px}
+
+.warn{background:var(--warn-bg);color:var(--warn-ink);border-radius:10px;padding:12px 16px;font-size:14px}
+.warn strong{font-weight:700}
+.warn ul{margin:6px 0 0;padding-left:20px}
+
+.tabs{display:flex;flex-wrap:wrap;gap:8px}
+.tab{font:500 14px var(--f-body);border:1.5px solid var(--line);background:var(--card);color:var(--ink);padding:6px 14px;border-radius:999px;cursor:pointer;display:flex;align-items:center;gap:8px}
+.tab .dot{width:10px;height:10px;border-radius:50%;background:var(--c)}
+.tab[aria-pressed="true"]{border-color:var(--c);background:color-mix(in srgb,var(--c) 14%,var(--card))}
+
+.mapbox{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;overflow-x:auto}
+.mapbox svg{display:block;width:100%;min-width:640px;height:auto}
+.maplabel{font:500 11px var(--f-body);fill:var(--ink);paint-order:stroke;stroke:var(--card);stroke-width:3px}
+.areal{font:700 12px var(--f-display);fill:var(--muted);letter-spacing:.1em}
+.pin{cursor:pointer;transition:opacity .2s}
+.pin.dim{opacity:.18}
+.pin circle{stroke:var(--card);stroke-width:2}
+.pin text.n{font:700 10px var(--f-mono);fill:#fff;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.route{fill:none;stroke-width:2;stroke-dasharray:4 4;opacity:.8}
+.maphint{font-size:12px;color:var(--muted);margin-top:6px}
+
+.day{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.dayhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 16px;border-bottom:2px solid var(--c);padding-bottom:8px}
+.dayhead .tag{font-family:var(--f-mono);font-size:13px;color:var(--c)}
+.dayhead .sum{color:var(--muted);font-size:14px}
+.stops{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.stop{display:grid;grid-template-columns:64px 28px minmax(0,1fr);gap:0 12px;position:relative}
+.stop .t{font:500 13px var(--f-mono);color:var(--muted);padding-top:3px;text-align:right;font-variant-numeric:tabular-nums}
+.stop .rail{position:relative;display:flex;justify-content:center}
+.stop .rail::before{content:"";position:absolute;top:0;bottom:0;width:2px;background:var(--line)}
+.stop:first-child .rail::before{top:12px}
+.stop:last-child .rail::before{bottom:calc(100% - 12px)}
+.stop .mk{position:relative;z-index:1;margin-top:2px;width:24px;height:24px;border-radius:50%;background:var(--c);color:#fff;font:700 11px/24px var(--f-mono);text-align:center}
+.stop .mk.move{background:var(--card);border:2px solid var(--line);color:var(--muted);line-height:20px;font-size:12px}
+.stop .body{padding-bottom:18px}
+.stop .name{font-weight:700;font-size:16px}
+.stop .name small{font-weight:400;color:var(--muted);font-size:13px;margin-left:6px}
+.stop .desc{color:var(--ink);font-size:14px;margin-top:2px}
+.stop .meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chip{font-size:12px;padding:1px 8px;border-radius:6px;background:var(--land);color:var(--muted)}
+.chip.star{background:color-mix(in srgb,var(--d2) 22%,var(--card));color:var(--ink)}
+.chip.alert{background:var(--warn-bg);color:var(--warn-ink)}
+.chip.src{background:color-mix(in srgb,var(--d1) 16%,var(--card));color:var(--ink)}
+.stop a.gm{font-size:12px;color:var(--d3);text-decoration:none;font-weight:500}
+.stop a.gm:hover{text-decoration:underline}
+.stop.transit .name{font-weight:500;font-size:14px;color:var(--muted)}
+.stop.opt .name::after{content:"可選";font:500 11px var(--f-body);margin-left:8px;padding:1px 6px;border:1px solid var(--line);border-radius:5px;color:var(--muted);vertical-align:2px}
+
+.spare{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.sp{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:14px;display:flex;flex-direction:column;gap:4px}
+.sp b{font-size:15px}
+.sp .why{color:var(--muted);font-size:13px}
+
+.index{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:14px}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:13.5px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:500 12px var(--f-mono);color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
+tr:last-child td{border-bottom:0}
+td .d{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--c);margin-right:6px}
+footer{font-size:12.5px;color:var(--muted)}
+@media (max-width:520px){.stop{grid-template-columns:48px 26px minmax(0,1fr);gap:0 8px}}
+@media (prefers-reduced-motion:reduce){.pin{transition:none}}
+</style>
+
+<style>html{-webkit-text-size-adjust:100%}body{margin:0}</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Bangkok · 10/4–10/8 · 5 天 4 夜</div>
+    <h1>曼谷吃爆五日</h1>
+    <p>把你的必吃地圖（米其林 7+1 間、肥波 10 間）和 Threads 上那攤脆脆香蕉煎餅，照著每天的景點動線排進去。同一區的店排在同一天，少跑冤枉路。</p>
+  </header>
+
+  <div class="warn" role="note">
+    <strong>日期對好了：10/4（日）到 10/8（四）。公休日這樣處理：</strong>
+    <ul>
+      <li>Jay Fai 只開週三到週六，這趟只有 Day 4（10/7 週三）吃得到，放在 Day 4 早上當可選。Day 2 週一改吃隔壁的鬼門炒河粉。</li>
+      <li>Threads 那攤香蕉煎餅週一、週二休，從 Day 3（週二）移到 Day 4（週三）。</li>
+      <li>Somsak Pu Ob 週一休，Day 3 是週二，照常。</li>
+      <li>建興 Siam Square One 已訂 10/4（日）18:30。</li>
+    </ul>
+  </div>
+
+  <nav class="tabs" id="tabs" aria-label="選擇天數"></nav>
+
+  <section class="mapbox" aria-label="路線示意圖">
+    <svg id="map" viewBox="0 0 900 470" role="img" aria-label="曼谷美食點位示意圖，依天數上色"></svg>
+    <div class="maphint">示意圖依經緯度等比例畫出，非真實地圖；點圓點看店名，要導航請按清單裡的 Google Maps。</div>
+  </section>
+
+  <section id="days" class="wrap" style="gap:36px"></section>
+
+  <section style="display:flex;flex-direction:column;gap:12px">
+    <h2>備胎清單</h2>
+    <p style="margin:0;color:var(--muted);font-size:14px">在你地圖上、但這次沒排進主線的。哪天有空檔或某間公休時拿來補。</p>
+    <div class="spare" id="spare"></div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:12px">
+    <h2>全部點位</h2>
+    <div class="index"><table>
+      <thead><tr><th>#</th><th>店名</th><th>吃什麼</th><th>營業</th><th>哪天</th></tr></thead>
+      <tbody id="idx"></tbody>
+    </table></div>
+  </section>
+
+  <footer><a href="./">← 回到曼谷美食必吃地圖</a><br>營業時間取自你原本的美食地圖與網路資料，出發前一週建議再用 Google Maps 確認一次。「曼谷新最高樓」這裡用的是 King Power Mahanakhon SkyWalk（314m，目前泰國最高的觀景台）。</footer>
+</div>
+
+<script>
+const DAYS=[
+  {id:1,date:"10/4 日",c:"--d1",title:"抵達・CentralWorld・建興酒家・牛仔街",sum:"Asok 放行李，Siam 逛街吃蟹，晚上回 Asok"},
+  {id:2,date:"10/5 一",c:"--d2",title:"鄭王廟・老城區吃一整天",sum:"河西早晨拍廟，中午過河吃老城名店"},
+  {id:3,date:"10/6 二",c:"--d3",title:"ICONSIAM・Mahanakhon 最高樓",sum:"河岸一路吃到夜景"},
+  {id:4,date:"10/7 三",c:"--d4",title:"嵩越路咖啡廳・香蕉煎餅・Lay Lao",sum:"中國城老屋咖啡廳，傍晚 MRT 到 Silom 吃煎餅，晚餐 Thong Lo"},
+  {id:5,date:"10/8 四",c:"--d5",title:"回家",sum:"10:50 的航班，一早退房直接去機場"}
+];
+const G=q=>"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);
+// n is assigned below in trip order; lat/lng approximate
+const SPOTS={
+  canopy:{day:1,name:"Canopy by Hilton",sub:"飯店・Asok",eat:"",hours:"12:00 寄放行李、15:00 入住",lat:13.7392,lng:100.5585,q:"Canopy by Hilton Bangkok",src:"住宿"},
+  asoklunch:{day:1,name:"Asok 泰式小吃",sub:"午餐",eat:"想吃麵的話，你地圖上的榮泰魚蛋粉在 Sukhumvit 26，BTS 坐一站到 Phrom Phong",hours:"",lat:13.7368,lng:100.5625,q:"Thai street food Asok Bangkok",src:"你指定"},
+  centralworld:{day:1,name:"CentralWorld",sub:"BTS Chit Lom / Siam",eat:"逛街購物",hours:"10:00–22:00",lat:13.7466,lng:100.5393,q:"CentralWorld Bangkok",src:"你指定"},
+  somboon:{day:1,name:"建興酒家 Somboon Seafood",sub:"Siam Square One・已訂 18:30",eat:"咖哩炒蟹、炸魚、蝦餅",hours:"每日 11:00 起",lat:13.7449,lng:100.5334,q:"Somboon Seafood Siam Square One",src:"已訂位"},
+  cowboy:{day:1,name:"牛仔街 Soi Cowboy",sub:"BTS Asok / MRT Sukhumvit",eat:"喝酒、夜生活",hours:"約 18:00 後熱鬧",lat:13.7378,lng:100.5613,q:"Soi Cowboy Bangkok",src:"你指定"},
+  letsrelax:{day:1,opt:true,name:"Let's Relax 按摩",sub:"Terminal 21・BTS Asok",eat:"足底、泰式按摩",hours:"營業到深夜",lat:13.7377,lng:100.5603,q:"Let's Relax Terminal 21 Asok",src:"按摩備案"},
+  healthland:{day:1,opt:true,name:"Health Land 按摩",sub:"Asok 店・Sukhumvit 21",eat:"泰式按摩，建議先預約",hours:"約 09:00–23:00",lat:13.7415,lng:100.5610,q:"Health Land Asok",src:"按摩備案"},
+  watarun:{day:2,name:"鄭王廟 Wat Arun",sub:"河西",eat:"",hours:"08:00–18:00",lat:13.7437,lng:100.4888,q:"Wat Arun",src:"你指定"},
+  mrjo:{day:2,name:"Mr. Jo 脆皮燒肉",sub:"Thonburi",eat:"脆皮燒肉飯 80฿、豬雜粿條 80฿",hours:"上午開，賣完就收",lat:13.7680,lng:100.4770,q:"Mr. Jo Crispy Pork Bangkok",src:"肥波 5/5"},
+  maeprapha:{day:2,name:"Mae Prapha 泰式脆餅",sub:"Phra Sumen Rd・近考山路",eat:"Khanom Bueang 甜鹹脆餅",hours:"每日 09:00–18:00",lat:13.7627,lng:100.4960,q:"Mae Prapha Crispy Pancake Bangkok",src:"米其林推薦"},
+  kpanich:{day:2,name:"K. Panich 芒果糯米飯",sub:"Tanao Rd",eat:"80 年配方芒果糯米飯 125฿",hours:"多數日 07:00–18:00",lat:13.7547,lng:100.4988,q:"K. Panich 431-433 Tanao Road Bangkok",src:"必比登"},
+  bunloet:{day:2,opt:true,name:"Bunloet 炭烤豬肉雞蛋麵",sub:"Nakhon Sawan Rd",eat:"炭烤叉燒雞蛋麵、豬骨湯",hours:"每日 10:00–17:00",lat:13.7625,lng:100.5052,q:"Bunloet 360 Soi Nakhon Sawan 8 Bangkok",src:"必比登"},
+  thipsamai:{day:2,name:"鬼門炒河粉 Thipsamai",sub:"Maha Chai Rd",eat:"蛋包泰式炒河粉 150฿",hours:"約 09:00–24:00",lat:13.7532,lng:100.5052,q:"Thipsamai Pad Thai Bangkok",src:"肥波 4/5"},
+  charoen:{day:3,name:"Charoen Saeng 豬腳",sub:"Charoen Krung Soi 49",eat:"中藥滷豬腳飯（1959 年配方）",hours:"每日 07:00–13:00",lat:13.7245,lng:100.5163,q:"Charoen Saeng Silom Bangkok",src:"米其林推薦"},
+  iconsiam:{day:3,name:"ICONSIAM",sub:"河西・SookSiam 美食街在 G 樓",eat:"水上市場風美食街",hours:"10:00–22:00",lat:13.7266,lng:100.5105,q:"ICONSIAM",src:"你指定"},
+  somsak:{day:3,name:"Somsak Pu Ob 砂鍋粉絲蟹",sub:"Charoen Rat Soi 1・近 BTS Wongwian Yai",eat:"砂鍋粉絲焗蟹／蝦",hours:"週二–週日 16:30–21:00",lat:13.7222,lng:100.5020,q:"Somsak Pu Ob Charoen Rat Bangkok",src:"必比登",alert:"週一休"},
+  mahanakhon:{day:3,name:"Mahanakhon SkyWalk",sub:"BTS Chong Nonsi",eat:"314m 玻璃地板觀景台",hours:"約 10:00–19:00（出發前確認末場）",lat:13.7236,lng:100.5283,q:"Mahanakhon SkyWalk",src:"你指定"},
+  jayfai:{day:4,opt:true,name:"Jay Fai 痣姐",sub:"Maha Chai Rd",eat:"蟹肉蛋捲 1400฿、醉炒飯 600฿",hours:"週三–週六 09:00–19:30",lat:13.7527,lng:100.5047,q:"Jay Fai 327 Maha Chai Road Bangkok",src:"米其林一星",alert:"這趟只有今天開，要排很久"},
+  songwat:{day:4,name:"嵩越路 Song Wat Road",sub:"中國城・MRT Wat Mangkon",eat:"老屋咖啡廳、選物店、河岸",hours:"店家多約 10:00–18:00",lat:13.7395,lng:100.5085,q:"Song Wat Road Bangkok",src:"你指定"},
+  ann:{day:4,opt:true,name:"Ann Guay Tiew Kua Gai",sub:"Charoen Krung（出發前確認位置）",eat:"雞肉炒河粉 50฿",hours:"",lat:13.7360,lng:100.5130,q:"Ann Guay Tiew Kua Gai Bangkok",src:"肥波 4.5/5"},
+  puy:{day:4,name:"Puy 脆脆香蕉煎餅",sub:"BTS Sala Daeng・Threads 截圖那攤",eat:"香蕉蛋 roti、斑蘭 roti",hours:"傍晚開賣，週一、二休",lat:13.7288,lng:100.5345,q:"Puy Roti Lady Silom Bangkok",src:"Threads 截圖"},
+  laylao:{day:4,name:"Lay Lao",sub:"Sukhumvit 36・BTS Thong Lo",eat:"醬燒小卷 265฿、醬燒松阪豬 165฿",hours:"午晚餐",lat:13.7213,lng:100.5785,q:"Lay Lao Bangkok",src:"肥波 5/5"},
+  goang:{day:0,name:"紅大哥水門雞飯 Go-Ang",sub:"Pratunam・機場快線 Ratchaprarop 站旁",eat:"海南雞飯 95฿、滷肉 90฿",hours:"早上就開（出發前確認）",lat:13.7507,lng:100.5420,q:"Go-Ang Pratunam Chicken Rice Bangkok",src:"肥波 4/5"},
+  rungrueang:{day:0,name:"榮泰魚蛋粉 Rung Rueang",sub:"Sukhumvit 26・BTS Phrom Phong",eat:"乾拌辣魚蛋麵 60฿、豬肉清湯 60฿",hours:"早上開到下午",lat:13.7262,lng:100.5692,q:"Rung Rueang Pork Noodles Bangkok",src:"肥波 4.5/5"},
+  jeho:{day:0,name:"Jeh O Chula 媽媽麵",sub:"Banthat Thong 一帶",eat:"酸辣媽媽麵 300฿、鮭魚沙拉 300฿",hours:"傍晚開到深夜",lat:13.7395,lng:100.5232,q:"Jeh O Chula Bangkok",src:"肥波 3/5"},
+  tang:{day:0,name:"Tang Sui Heng 砂鍋燉鴨",sub:"Banthat Thong Rd",eat:"砂鍋燉鴨、鴨雜、鴨血",hours:"每日 10:30–19:30",lat:13.7430,lng:100.5212,q:"Tang Sui Heng 649 Banthat Thong Road Bangkok",src:"米其林推薦"},
+  polo:{day:0,name:"Polo 炸雞",sub:"Soi Polo・近 Lumphini 公園",eat:"半隻炸雞 130฿、青木瓜沙拉",hours:"",lat:13.7310,lng:100.5462,q:"Polo Fried Chicken Bangkok",src:"肥波 3.5/5"},
+  roots:{day:0,name:"Roots Coffee @ The Commons",sub:"Thong Lo Soi 17",eat:"咖啡、早午餐",hours:"約 08:00–19:00",lat:13.7355,lng:100.5835,q:"Roots The Commons Thonglor",src:"咖啡廳建議"},
+};
+const PLAN={
+ 1:[
+  ["09:45","t","抵達 BKK 蘇凡納布機場","入境、領行李。機場快線到 Makkasan 轉 MRT Phetchaburi → Sukhumvit，或直接叫 Grab"],
+  ["12:00","canopy","","先寄放行李"],
+  ["12:30","asoklunch","","你排的午餐"],
+  ["15:00","canopy","","Check-in，休息 30 分鐘"],
+  ["15:40","t","BTS Asok → Chit Lom","3 站，約 8 分鐘，Chit Lom 站有天橋直通 CentralWorld"],
+  ["16:00","centralworld","","逛到 18:00"],
+  ["18:15","t","步行到 Siam Square One","沿天橋走約 10 分鐘"],
+  ["18:30","somboon","","已訂位，吃到 20:00"],
+  ["20:05","t","BTS Siam → Asok","4 站，約 10 分鐘"],
+  ["20:30","cowboy","","參觀、喝酒"],
+  ["","letsrelax","","走累了就去按摩，Terminal 21 就在 Asok 站旁"],
+  ["","healthland","","另一個選擇，走路約 5 分鐘，先預約比較保險"],
+ ],
+ 2:[
+  ["07:45","watarun","","8 點開門前後人最少、光線最好。從 Tha Tien 碼頭搭渡輪過河"],
+  ["09:30","mrjo","","Grab 約 15 分鐘。你地圖上 5/5 的脆皮燒肉，早點去才不會賣完"],
+  ["11:00","t","Grab 過河回老城","約 20 分鐘"],
+  ["11:30","maeprapha","","考山路旁邊，順便逛 Khao San"],
+  ["13:00","kpanich","","芒果糯米飯當午後甜點"],
+  ["14:00","bunloet","","還吃得下再去，17:00 收"],
+  ["17:00","thipsamai","","晚餐。痣姐就在隔壁，但今天週一公休"],
+ ],
+ 3:[
+  ["08:30","charoen","","BTS Saphan Taksin 附近，13:00 就收"],
+  ["09:45","t","Sathorn 碼頭 → ICONSIAM","免費接駁船，約 10 分鐘"],
+  ["10:00","iconsiam","","逛街，SookSiam 美食街當午餐"],
+  ["16:30","somsak","","Grab 約 10 分鐘，一開門就到，吃完剛好趕夕陽"],
+  ["17:30","mahanakhon","","10 月初曼谷日落約 18:05，白天夜景都看得到"],
+ ],
+ 4:[
+  ["09:00","jayfai","","這趟唯一有開的一天。早上去登記排隊，常要等 2–3 小時；不想排就跳過"],
+  ["12:00","songwat","","咖啡廳日主場。老屋咖啡廳、選物店很多，挑 1–2 間慢慢坐"],
+  ["","ann","","想吃點鹹的再去，出發前先在 Google Maps 確認位置"],
+  ["16:30","t","MRT Wat Mangkon → Si Lom","藍線 3 站，Si Lom 站就是 BTS Sala Daeng"],
+  ["17:00","puy","","你截圖那攤「人生香蕉煎餅」，週三有開"],
+  ["18:00","t","BTS Sala Daeng → Siam → Thong Lo","在 Siam 轉車，約 25 分鐘"],
+  ["18:30","laylao","","你地圖上 5/5，醬燒小卷必點"],
+ ],
+ 5:[
+  ["06:30","canopy","","退房。前一晚把行李整理好，早餐到機場再吃"],
+  ["06:40","t","Grab 到蘇凡納布機場","清晨不塞車，約 30–40 分鐘。也可以搭 MRT Sukhumvit → Phetchaburi，轉機場快線 Makkasan 站"],
+  ["07:30","t","抵達機場、報到","起飛前 3 小時到。有買東西要退稅的話，先去 VAT Refund 櫃檯蓋章"],
+  ["08:30","t","機場早餐、過安檢","出關後登機門比較遠，預留時間走過去"],
+  ["10:50","t","起飛 ✈️ 回家",""],
+ ]
+};
+const SPARE=[
+  {k:"goang",why:"原本排 Day 5，但航班太早來不及。在 Pratunam，Day 1 逛完 CentralWorld 走路約 10 分鐘"},
+  {k:"rungrueang",why:"離 Asok 一站，Day 1 午餐可以選這間"},
+  {k:"roots",why:"Day 4 想換到 Sukhumvit 喝咖啡的話"},
+  {k:"jeho",why:"深夜才熱鬧，哪天晚上還餓就去"},
+  {k:"tang",why:"跟 Jeh O 同一條街，可以一起吃"},
+  {k:"polo",why:"近 Lumphini 公園，Day 4 吃完煎餅順路"},
+  {k:null,name:"Fried Banana Rama 5",why:"在 Nonthaburi，離市區太遠，建議略過",src:"米其林推薦"}
+];
+
+const col=d=>d?`var(${DAYS[d-1].c})`:"var(--spare)";
+let active=0;
+
+// number pins in trip order, spares last
+{let i=1;const seen=new Set();for(const d of DAYS)for(const r of PLAN[d.id]){if(r[1]==="t"||seen.has(r[1]))continue;seen.add(r[1]);SPOTS[r[1]].n=i++;}
+ for(const k in SPOTS)if(!seen.has(k))SPOTS[k].n=i++;}
+// ---- map ----
+const W=900,H=470,B={n:13.775,s:13.712,w:100.468,e:100.592};
+const px=lng=>((lng-B.w)/(B.e-B.w))*W, py=lat=>((B.n-lat)/(B.n-B.s))*H;
+const river=[[13.775,100.4955],[13.762,100.4940],[13.752,100.4905],[13.744,100.4915],[13.739,100.4975],[13.735,100.5040],[13.731,100.5105],[13.726,100.5130],[13.720,100.5135],[13.714,100.5160],[13.712,100.5200]];
+function drawMap(){
+  const s=document.getElementById("map");
+  let h=`<rect width="${W}" height="${H}" fill="var(--land)" rx="8"/>`;
+  h+=`<polyline points="${river.map(([a,b])=>px(b)+","+py(a)).join(" ")}" fill="none" stroke="var(--river)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>`;
+  h+=`<text class="areal" x="${px(100.472)}" y="${py(13.735)}">河西 THONBURI</text>`;
+  h+=`<text class="areal" x="${px(100.497)}" y="${py(13.771)}">老城</text><text class="areal" x="${px(100.500)}" y="${py(13.733)}">中國城</text>`;
+  h+=`<text class="areal" x="${px(100.519)}" y="${py(13.715)}">SILOM / SATHORN</text>`;
+  h+=`<text class="areal" x="${px(100.553)}" y="${py(13.717)}">SUKHUMVIT</text>`;
+  h+=`<text class="areal" x="${px(100.531)}" y="${py(13.758)}">PRATUNAM</text>`;
+  // day routes
+  for(const d of DAYS){
+    const pts=PLAN[d.id].filter(r=>r[1]!=="t").map(r=>SPOTS[r[1]]);
+    if(pts.length<2)continue;
+    h+=`<polyline class="route" data-day="${d.id}" stroke="${col(d.id)}" points="${pts.map(p=>px(p.lng)+","+py(p.lat)).join(" ")}"/>`;
+  }
+  for(const [k,p] of Object.entries(SPOTS)){
+    const x=px(p.lng),y=py(p.lat);
+    const lx=(k==="thipsamai"||k==="cowboy"||k==="cafe2")?x+13:x+13, ly=(k==="thipsamai")?y+14:(k==="jayfai"?y-8:y+4);
+    h+=`<g class="pin" data-day="${p.day}" data-k="${k}" tabindex="0"><title>${p.name}</title><circle cx="${x}" cy="${y}" r="10" fill="${col(p.day)}"/><text class="n" x="${x}" y="${y}">${p.n}</text>${p.opt||["asoklunch","canopy"].includes(k)?"":`<text class="maplabel" x="${lx}" y="${ly}">${p.name.split(" ")[0]}</text>`}</g>`;
+  }
+  s.innerHTML=h;
+  s.querySelectorAll(".pin").forEach(g=>{
+    const go=()=>{const el=document.getElementById("s-"+g.dataset.k);if(el)el.scrollIntoView({behavior:"smooth",block:"center"});};
+    g.addEventListener("click",go);g.addEventListener("keydown",e=>{if(e.key==="Enter")go();});
+  });
+}
+function applyFilter(){
+  document.querySelectorAll("#map .pin").forEach(g=>g.classList.toggle("dim",active&&+g.dataset.day!==active));
+  document.querySelectorAll("#map .route").forEach(r=>r.style.opacity=(!active||+r.dataset.day===active)?.8:.08);
+  document.querySelectorAll(".day").forEach(d=>d.hidden=active&&+d.dataset.day!==active);
+  document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-pressed",+t.dataset.day===active));
+}
+// ---- tabs ----
+const tabs=document.getElementById("tabs");
+tabs.innerHTML=`<button class="tab" data-day="0" style="--c:var(--ink)">全部</button>`+DAYS.map(d=>`<button class="tab" data-day="${d.id}" style="--c:var(${d.c})"><span class="dot"></span>Day ${d.id}・${d.date.split(" ")[0]}</button>`).join("");
+tabs.addEventListener("click",e=>{const b=e.target.closest(".tab");if(!b)return;active=+b.dataset.day;applyFilter();});
+
+// ---- days ----
+const chips=p=>{
+  let c=`<span class="chip ${/米其林|必比登/.test(p.src)?"star":p.src.includes("Threads")?"src":""}">${p.src}</span>`;
+  if(p.hours)c+=`<span class="chip">${p.hours}</span>`;
+  if(p.alert)c+=`<span class="chip alert">${p.alert}</span>`;
+  return c;
+};
+document.getElementById("days").innerHTML=DAYS.map(d=>`
+  <article class="day" data-day="${d.id}" style="--c:var(${d.c})">
+    <div class="dayhead"><span class="tag">DAY ${d.id} · ${d.date}</span><h2>${d.title}</h2><span class="sum">${d.sum}</span></div>
+    <ol class="stops">${PLAN[d.id].map(([t,k,a,b])=>{
+      if(k==="t")return `<li class="stop transit"><div class="t">${t}</div><div class="rail"><div class="mk move">→</div></div><div class="body"><div class="name">${a}</div><div class="desc" style="color:var(--muted)">${b}</div></div></li>`;
+      const p=SPOTS[k];
+      return `<li class="stop${p.opt?" opt":""}" id="s-${k}"><div class="t">${t}</div><div class="rail"><div class="mk">${p.n}</div></div><div class="body"><div class="name">${p.name}<small>${p.sub}</small></div>${p.eat?`<div class="desc">${p.eat}</div>`:""}<div class="desc" style="color:var(--muted)">${b}</div><div class="meta">${chips(p)}<a class="gm" href="${G(p.q)}" target="_blank" rel="noopener">Google Maps ↗</a></div></div></li>`;
+    }).join("")}</ol>
+  </article>`).join("");
+
+document.getElementById("spare").innerHTML=SPARE.map(s=>{
+  const p=s.k?SPOTS[s.k]:{name:s.name,eat:"炸香蕉",src:s.src,q:"Fried Banana Rama 5 Nonthaburi"};
+  return `<div class="sp" ${s.k?`id="s-${s.k}"`:""}><b>${p.name}</b><span>${p.eat}</span><span class="why">${s.why}</span><a class="gm" style="font-size:12px;color:var(--d3)" href="${G(p.q)}" target="_blank" rel="noopener">Google Maps ↗</a></div>`;
+}).join("");
+
+document.getElementById("idx").innerHTML=Object.values(SPOTS).sort((a,b)=>a.n-b.n).map(p=>`<tr><td style="font-family:var(--f-mono)">${p.n}</td><td><a href="${G(p.q)}" target="_blank" rel="noopener">${p.name}</a></td><td>${p.eat||"—"}</td><td>${p.hours||"—"}</td><td><span class="d" style="--c:${col(p.day)}"></span>${p.day?"Day "+p.day:"備胎"}</td></tr>`).join("");
+
+drawMap();applyFilter();
+</script>
+
+</body>
+</html>
