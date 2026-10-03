@@ -158,7 +158,7 @@ const DAYS=[
   {id:1,date:"10/4 日",c:"--d1",title:"抵達・CentralWorld・建興酒家・牛仔街",sum:"住 Canopy by Hilton（Asok）。Siam 逛街吃蟹，晚上回 Asok"},
   {id:2,date:"10/5 一",c:"--d2",title:"鄭王廟・老城小吃・朱拉50巷・Lay Lao",sum:"MRT 藍線一路坐到老城，回程在 Sam Yan 下車吃朱拉50巷，晚上 Lay Lao，想跑夜店就去 RCA"},
   {id:3,date:"10/6 二",c:"--d3",title:"生日快樂 🎂 嵩越路・Le Du Kaan・Sing Sing",sum:"換飯店到千禧希爾頓。下午逛嵩越路，傍晚上最高樓，17:30 頂樓慶生，續攤 Sing Sing"},
-  {id:4,date:"10/7 三",c:"--d4",title:"ICONSIAM・老城悠哉逛・金山寺夕陽",sum:"睡飽先逛隔壁 ICONSIAM，搭船到 Tha Tien 喝河景咖啡，下午照 IG 影片逛 Sam Yot 老街區，金山寺看夕陽，晚上 Maha Chai 路吃到飽"},
+  {id:4,date:"10/7 三",c:"--d4",title:"ICONSIAM・老城悠哉逛・金山寺夕陽",sum:"睡飽先逛隔壁 ICONSIAM，搭船到 Tha Tien 喝河景咖啡，下午照 IG 影片逛 Sam Yot 老街區，金山寺看夕陽，晚上 Maha Chai 路吃到飽，最後可以去朱拉隆功夜市"},
   {id:5,date:"10/8 四",c:"--d5",title:"回家",sum:"10:50 的航班，一早退房直接去機場"}
 ];
 const G=q=>"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);
@@ -177,6 +177,7 @@ const SPOTS={
   kpanich:{day:2,name:"K. Panich 芒果糯米飯",sub:"Tanao Rd",eat:"80 年配方芒果糯米飯 125฿",hours:"多數日 07:00–18:00",lat:13.7547,lng:100.4988,q:"K. Panich 431-433 Tanao Road Bangkok",src:"必比登"},
   laylao:{day:2,name:"Lay Lao",sub:"Sukhumvit 36・BTS Thong Lo",eat:"醬燒小卷 265฿、醬燒松阪豬 165฿",hours:"午晚餐",lat:13.7213,lng:100.5785,q:"Lay Lao Bangkok",src:"肥波 5/5"},
   chula50:{day:2,name:"朱拉50巷廚房 Chula 50 Kitchen",sub:"Banthat Thong Rd・MRT Sam Yan 走路 5 分鐘",eat:"招牌咖哩蟹肉飯",hours:"週一–週六 07:00–19:00",lat:13.7385,lng:100.5238,q:"Chula 50 Kitchen Bangkok",src:"你指定",alert:"週日休"},
+  chulanight:{day:4,opt:true,name:"朱拉隆功夜市",sub:"Banthat Thong Rd・MRT Sam Yan",eat:"整條街的小吃、甜點、韓式、火鍋，學生族群多",hours:"每日 16:00–23:45，18:00–21:00 最熱鬧",lat:13.7408,lng:100.5228,q:"Chulalongkorn night market Banthat Thong Bangkok",src:"你指定"},
   millennium:{day:3,name:"曼谷千禧希爾頓飯店",sub:"Millennium Hilton・河西・10/6–10/7 兩晚",eat:"飯店有免費接駁船到對岸 Sathorn / Si Phraya 碼頭",hours:"",lat:13.7300,lng:100.5112,q:"Millennium Hilton Bangkok",src:"住宿"},
   charoen:{day:3,name:"Charoen Saeng 豬腳",sub:"Charoen Krung Soi 49",eat:"中藥滷豬腳飯（1959 年配方）",hours:"每日 07:00–13:00",lat:13.7245,lng:100.5163,q:"Charoen Saeng Silom Bangkok",src:"米其林推薦"},
   songwat:{day:3,name:"嵩越路 Song Wat Road",sub:"中國城・離千禧希爾頓很近",eat:"老屋咖啡廳、選物店、河岸",hours:"店家多約 10:00–18:00",lat:13.7395,lng:100.5085,q:"Song Wat Road Bangkok",src:"你指定"},
@@ -266,7 +267,9 @@ const PLAN={
   ["17:00","watsaket","","IG 影片｜就在打缽村旁邊。爬 344 階上頂，看夕陽（約 18:05）和夜景，19:00 關"],
   ["18:30","thipsamai","","走路約 5 分鐘。Jay Fai 也在隔壁，週三有開，想試可以排排看"],
   ["19:30","timnomsod","","IG 影片｜同一條路，18:00 才開，烤吐司配鮮奶當飯後甜點"],
-  ["20:30","t","Grab 回飯店","約 20 分鐘"],
+  ["20:15","t","MRT Sam Yot → Sam Yan","藍線 4 站，約 10 分鐘"],
+  ["20:30","chulanight","","還吃得下就來逛，邊走邊買小吃。Jeh O 媽媽麵、Tang Sui Heng 燉鴨也在這條路上"],
+  ["21:45","t","Grab 回飯店","約 20 分鐘；不去夜市的話從老城直接回，也是約 20 分鐘"],
  ],
  5:[
   ["06:30","millennium","","退房。前一晚把行李整理好，早餐到機場再吃"],
