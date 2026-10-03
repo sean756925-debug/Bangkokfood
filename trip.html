@@ -157,7 +157,7 @@ const DAYS=[
   {id:1,date:"10/4 日",c:"--d1",title:"抵達・CentralWorld・建興酒家・牛仔街",sum:"住 Canopy by Hilton（Asok）。Siam 逛街吃蟹，晚上回 Asok"},
   {id:2,date:"10/5 一",c:"--d2",title:"鄭王廟・老城小吃・Lay Lao",sum:"MRT 藍線一路坐到老城，晚上回 Asok 附近吃 Lay Lao"},
   {id:3,date:"10/6 二",c:"--d3",title:"生日快樂 🎂 嵩越路・Mahanakhon・Le Du Kaan",sum:"換飯店到千禧希爾頓。下午逛嵩越路，傍晚上最高樓，17:30 頂樓慶生"},
-  {id:4,date:"10/7 三",c:"--d4",title:"老城悠哉逛・Sam Yot 街區・金山寺夕陽",sum:"睡飽再出門，臥佛寺河景咖啡，下午照 IG 影片逛 Sam Yot 老街區，金山寺看夕陽，晚上 Maha Chai 路吃到飽"},
+  {id:4,date:"10/7 三",c:"--d4",title:"老城悠哉逛・Sam Yot 街區・金山寺夕陽",sum:"睡飽再出門，Tha Tien 河景咖啡，下午照 IG 影片逛 Sam Yot 老街區，金山寺看夕陽，晚上 Maha Chai 路吃到飽"},
   {id:5,date:"10/8 四",c:"--d5",title:"回家",sum:"10:50 的航班，一早退房直接去機場"}
 ];
 const G=q=>"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);
@@ -183,9 +183,8 @@ const SPOTS={
   ledukaan:{day:3,name:"Le Du Kaan 🎂",sub:"The Empire 56F・BTS Chong Nonsi 5 號出口",eat:"Chef Ton 的泰式頂樓餐廳，慶生晚餐",hours:"晚餐 17:00–01:00",lat:13.7216,lng:100.5294,q:"Le Du Kaan The Empire Bangkok",src:"已訂 17:30"},
   jayfai:{day:0,name:"Jay Fai 痣姐",sub:"Maha Chai Rd",eat:"蟹肉蛋捲 1400฿、醉炒飯 600฿",hours:"週三–週六 09:00–19:30",lat:13.7527,lng:100.5047,q:"Jay Fai 327 Maha Chai Road Bangkok",src:"米其林一星",alert:"週日–二休"},
   thipsamai:{day:4,name:"鬼門炒河粉 Thipsamai",sub:"Maha Chai Rd・痣姐隔壁",eat:"蛋包泰式炒河粉 150฿",hours:"約 09:00–24:00",lat:13.7532,lng:100.5052,q:"Thipsamai Pad Thai Bangkok",src:"肥波 4/5"},
-  watpho:{day:4,name:"臥佛寺 Wat Pho",sub:"MRT Sanam Chai",eat:"46m 金色臥佛",hours:"08:00–18:30",lat:13.7465,lng:100.4935,q:"Wat Pho",src:"老城推薦"},
   vivi:{day:4,name:"ViVi The Coffee Place",sub:"Tha Tien・河邊",eat:"河岸座位正對鄭王廟",hours:"",lat:13.7453,lng:100.4905,q:"ViVi The Coffee Place Bangkok",src:"咖啡廳推薦"},
-  bluewhale:{day:4,name:"Blue Whale Maharaj",sub:"Maha Rat Rd・臥佛寺旁",eat:"招牌藍色蝶豆花拿鐵 80–180฿",hours:"",lat:13.7443,lng:100.4927,q:"Blue Whale Maharaj Bangkok",src:"咖啡廳推薦"},
+  bluewhale:{day:4,name:"Blue Whale Maharaj",sub:"Maha Rat Rd・Tha Tien",eat:"招牌藍色蝶豆花拿鐵 80–180฿",hours:"",lat:13.7443,lng:100.4927,q:"Blue Whale Maharaj Bangkok",src:"咖啡廳推薦"},
   floral:{day:0,name:"Floral Cafe",sub:"Pak Khlong Talat 花市",eat:"藏在花市裡的花藝咖啡廳",hours:"",lat:13.7410,lng:100.4965,q:"Floral Cafe Napasorn Bangkok",src:"咖啡廳推薦"},
   puy:{day:1,name:"Puy 脆脆香蕉煎餅",sub:"Silom × Sala Daeng 路口・Threads 截圖那攤",eat:"香蕉蛋 roti、斑蘭 roti",hours:"週三–週日 16:00–22:00",lat:13.7288,lng:100.5345,q:"Puy Roti Lady Silom Bangkok",src:"Threads 截圖"},
   somsak:{day:0,name:"Somsak Pu Ob 砂鍋粉絲蟹",sub:"Charoen Rat Soi 1・離飯店很近",eat:"砂鍋粉絲焗蟹／蝦",hours:"週二–週日 16:30–21:00",lat:13.7222,lng:100.5020,q:"Somsak Pu Ob Charoen Rat Bangkok",src:"必比登"},
@@ -248,9 +247,8 @@ const PLAN={
  4:[
   ["睡飽","millennium","","今天不趕，睡到自然醒，在飯店吃早餐"],
   ["10:00","t","飯店接駁船 → Sathorn 碼頭 → 昭披耶河快船到 Tha Tien","橘旗船約 30 分鐘，沿路看河岸風景。河水太高停駛的話改叫 Grab"],
-  ["10:45","watpho","","慢慢逛，不想進去也可以在外面拍"],
-  ["11:45","vivi","","走路 5 分鐘。河邊座位正對鄭王廟，坐久一點"],
-  ["13:00","bluewhale","","臥佛寺旁邊，午餐加藍色拿鐵"],
+  ["10:45","vivi","","下船走路約 3 分鐘。河邊座位正對鄭王廟，坐久一點"],
+  ["12:30","bluewhale","","走路約 3 分鐘，午餐加藍色拿鐵"],
   ["14:00","mowaan","","IG 影片｜Grab 約 10 分鐘。四代傳承的泰式藥草老店，老洋房很好拍"],
   ["15:00","petitpeyton","","IG 影片｜走路約 10 分鐘，Maha Chai 路上，坐下來休息"],
   ["16:00","banbat","","IG 影片｜全泰國最後一個手工打缽村，師傅白天工作，趁天亮去"],
@@ -270,7 +268,7 @@ const PLAN={
 const SPARE=[
   {k:"jayfai",why:"Day 4 晚餐就在隔壁，週三有開，但常要排 2–3 小時"},
   {k:"somsak",why:"週二到週日 16:30 開，離千禧希爾頓很近，這次晚餐都排滿了"},
-  {k:"floral",why:"Day 4 早上在臥佛寺附近還有時間的話"},
+  {k:"floral",why:"Day 4 早上在 Tha Tien 附近還有時間的話"},
   {k:"goang",why:"在 Pratunam，Day 1 逛完 CentralWorld 走路約 10 分鐘"},
   {k:"bunloet",why:"Day 2 在老城還吃得下的話，17:00 收"},
   {k:"rungrueang",why:"離 Asok 一站，Day 1 午餐可以選這間"},
