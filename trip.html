@@ -156,7 +156,7 @@ footer{font-size:12.5px;color:var(--muted)}
 <script>
 const DAYS=[
   {id:1,date:"10/4 日",c:"--d1",title:"抵達・CentralWorld・建興酒家・牛仔街",sum:"住 Canopy by Hilton（Asok）。Siam 逛街吃蟹，晚上回 Asok"},
-  {id:2,date:"10/5 一",c:"--d2",title:"鄭王廟・老城小吃・Lay Lao・RCA",sum:"MRT 藍線一路坐到老城，晚上回 Asok 附近吃 Lay Lao，想跑夜店就去 RCA"},
+  {id:2,date:"10/5 一",c:"--d2",title:"鄭王廟・老城小吃・朱拉50巷・Lay Lao",sum:"MRT 藍線一路坐到老城，回程在 Sam Yan 下車吃朱拉50巷，晚上 Lay Lao，想跑夜店就去 RCA"},
   {id:3,date:"10/6 二",c:"--d3",title:"生日快樂 🎂 嵩越路・Le Du Kaan・Sing Sing",sum:"換飯店到千禧希爾頓。下午逛嵩越路，傍晚上最高樓，17:30 頂樓慶生，續攤 Sing Sing"},
   {id:4,date:"10/7 三",c:"--d4",title:"ICONSIAM・老城悠哉逛・金山寺夕陽",sum:"睡飽先逛隔壁 ICONSIAM，搭船到 Tha Tien 喝河景咖啡，下午照 IG 影片逛 Sam Yot 老街區，金山寺看夕陽，晚上 Maha Chai 路吃到飽"},
   {id:5,date:"10/8 四",c:"--d5",title:"回家",sum:"10:50 的航班，一早退房直接去機場"}
@@ -176,6 +176,7 @@ const SPOTS={
   maeprapha:{day:2,name:"Mae Prapha 泰式脆餅",sub:"Phra Sumen Rd・近考山路",eat:"Khanom Bueang 甜鹹脆餅",hours:"每日 09:00–18:00",lat:13.7627,lng:100.4960,q:"Mae Prapha Crispy Pancake Bangkok",src:"米其林推薦"},
   kpanich:{day:2,name:"K. Panich 芒果糯米飯",sub:"Tanao Rd",eat:"80 年配方芒果糯米飯 125฿",hours:"多數日 07:00–18:00",lat:13.7547,lng:100.4988,q:"K. Panich 431-433 Tanao Road Bangkok",src:"必比登"},
   laylao:{day:2,name:"Lay Lao",sub:"Sukhumvit 36・BTS Thong Lo",eat:"醬燒小卷 265฿、醬燒松阪豬 165฿",hours:"午晚餐",lat:13.7213,lng:100.5785,q:"Lay Lao Bangkok",src:"肥波 5/5"},
+  chula50:{day:2,name:"朱拉50巷廚房 Chula 50 Kitchen",sub:"Banthat Thong Rd・MRT Sam Yan 走路 5 分鐘",eat:"招牌咖哩蟹肉飯",hours:"週一–週六 07:00–19:00",lat:13.7385,lng:100.5238,q:"Chula 50 Kitchen Bangkok",src:"你指定",alert:"週日休"},
   millennium:{day:3,name:"曼谷千禧希爾頓飯店",sub:"Millennium Hilton・河西・10/6–10/7 兩晚",eat:"飯店有免費接駁船到對岸 Sathorn / Si Phraya 碼頭",hours:"",lat:13.7300,lng:100.5112,q:"Millennium Hilton Bangkok",src:"住宿"},
   charoen:{day:3,name:"Charoen Saeng 豬腳",sub:"Charoen Krung Soi 49",eat:"中藥滷豬腳飯（1959 年配方）",hours:"每日 07:00–13:00",lat:13.7245,lng:100.5163,q:"Charoen Saeng Silom Bangkok",src:"米其林推薦"},
   songwat:{day:3,name:"嵩越路 Song Wat Road",sub:"中國城・離千禧希爾頓很近",eat:"老屋咖啡廳、選物店、河岸",hours:"店家多約 10:00–18:00",lat:13.7395,lng:100.5085,q:"Song Wat Road Bangkok",src:"你指定"},
@@ -231,7 +232,9 @@ const PLAN={
   ["11:00","t","Grab 過河回老城","約 20 分鐘"],
   ["11:30","maeprapha","","考山路旁邊，順便逛 Khao San"],
   ["13:00","kpanich","","芒果糯米飯當午後甜點"],
-  ["14:00","t","回 Asok 飯店休息","MRT Sam Yot → Sukhumvit，約 25 分鐘"],
+  ["14:00","t","MRT Sam Yot → Sam Yan","藍線 4 站，約 10 分鐘，剛好在回飯店的路上"],
+  ["14:30","chula50","","下午茶時段人比較少，咖哩蟹肉飯必點。週日休，這天週一有開"],
+  ["15:30","t","MRT Sam Yan → Sukhumvit，回 Asok 飯店休息","同一條藍線 5 站，約 12 分鐘"],
   ["18:30","laylao","","BTS Asok → Thong Lo 2 站。你地圖上 5/5，醬燒小卷必點"],
   ["21:30","route66","","Grab 約 15 分鐘，曼谷最大的夜店區。隔天 09:30 要退房，別玩太晚"],
  ],
