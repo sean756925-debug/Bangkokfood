@@ -165,7 +165,8 @@ const G=q=>"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent
 // n is assigned below in trip order; lat/lng approximate
 const SPOTS={
   canopy:{day:1,name:"Canopy by Hilton",sub:"飯店・Asok・10/4–10/5 兩晚",eat:"",hours:"12:00 寄放行李、15:00 入住",lat:13.7392,lng:100.5585,q:"Canopy by Hilton Bangkok",src:"住宿"},
-  asoklunch:{day:1,name:"Asok 泰式小吃",sub:"午餐",eat:"想吃麵的話，你地圖上的榮泰魚蛋粉在 Sukhumvit 26，BTS 坐一站到 Phrom Phong",hours:"",lat:13.7368,lng:100.5625,q:"Thai street food Asok Bangkok",src:"你指定"},
+  pier21:{day:1,name:"Pier 21 美食街",sub:"Terminal 21 5F・BTS Asok",eat:"泰式炒河粉、打拋豬、芒果糯米飯，一盤約 50–80฿",hours:"每日 10:00–22:00",lat:13.7372,lng:100.5600,q:"Pier 21 Food Court Terminal 21 Asok",src:"午餐"},
+  emquartier:{day:1,opt:true,name:"EmQuartier / EmSphere 美食街",sub:"BTS Phrom Phong",eat:"選擇比 Pier 21 多，室內有冷氣",hours:"每日 10:00–22:00",lat:13.7310,lng:100.5695,q:"EmQuartier Bangkok",src:"午餐備案"},
   centralworld:{day:1,name:"CentralWorld",sub:"BTS Chit Lom / Siam",eat:"逛街購物",hours:"10:00–22:00",lat:13.7466,lng:100.5393,q:"CentralWorld Bangkok",src:"你指定"},
   somboon:{day:1,name:"建興酒家 Somboon Seafood",sub:"Siam Square One・已訂 18:30",eat:"咖哩炒蟹、炸魚、蝦餅",hours:"每日 11:00 起",lat:13.7449,lng:100.5334,q:"Somboon Seafood Siam Square One",src:"已訂位"},
   cowboy:{day:1,name:"牛仔街 Soi Cowboy",sub:"BTS Asok / MRT Sukhumvit",eat:"喝酒、夜生活",hours:"約 18:00 後熱鬧",lat:13.7378,lng:100.5613,q:"Soi Cowboy Bangkok",src:"你指定"},
@@ -202,7 +203,7 @@ const SPOTS={
   singsing:{day:3,name:"Sing Sing Theater",sub:"Sukhumvit 45・BTS Phrom Phong",eat:"上海老戲院風格的夜店，有表演",hours:"週二–週六 21:00 起",lat:13.7310,lng:100.5752,q:"Sing Sing Theater Bangkok",src:"夜店",alert:"帶護照正本，週日一休"},
   goang:{day:0,name:"紅大哥水門雞飯 Go-Ang",sub:"Pratunam・機場快線 Ratchaprarop 站旁",eat:"海南雞飯 95฿、滷肉 90฿",hours:"早上就開（出發前確認）",lat:13.7507,lng:100.5420,q:"Go-Ang Pratunam Chicken Rice Bangkok",src:"肥波 4/5"},
   bunloet:{day:0,name:"Bunloet 炭烤豬肉雞蛋麵",sub:"Nakhon Sawan Rd",eat:"炭烤叉燒雞蛋麵、豬骨湯",hours:"每日 10:00–17:00",lat:13.7625,lng:100.5052,q:"Bunloet 360 Soi Nakhon Sawan 8 Bangkok",src:"必比登"},
-  rungrueang:{day:0,name:"榮泰魚蛋粉 Rung Rueang",sub:"Sukhumvit 26・BTS Phrom Phong",eat:"乾拌辣魚蛋麵 60฿、豬肉清湯 60฿",hours:"早上開到下午",lat:13.7262,lng:100.5692,q:"Rung Rueang Pork Noodles Bangkok",src:"肥波 4.5/5"},
+  rungrueang:{day:1,opt:true,name:"榮泰魚蛋粉 Rung Rueang",sub:"Sukhumvit 26・BTS Phrom Phong",eat:"乾拌辣魚蛋麵 60฿、豬肉清湯 60฿",hours:"早上開到下午",lat:13.7262,lng:100.5692,q:"Rung Rueang Pork Noodles Bangkok",src:"肥波 4.5/5"},
   jeho:{day:0,name:"Jeh O Chula 媽媽麵",sub:"Banthat Thong 一帶",eat:"酸辣媽媽麵 300฿、鮭魚沙拉 300฿",hours:"傍晚開到深夜",lat:13.7395,lng:100.5232,q:"Jeh O Chula Bangkok",src:"肥波 3/5"},
   tang:{day:0,name:"Tang Sui Heng 砂鍋燉鴨",sub:"Banthat Thong Rd",eat:"砂鍋燉鴨、鴨雜、鴨血",hours:"每日 10:30–19:30",lat:13.7430,lng:100.5212,q:"Tang Sui Heng 649 Banthat Thong Road Bangkok",src:"米其林推薦"},
   polo:{day:0,name:"Polo 炸雞",sub:"Soi Polo・近 Lumphini 公園",eat:"半隻炸雞 130฿、青木瓜沙拉",hours:"",lat:13.7310,lng:100.5462,q:"Polo Fried Chicken Bangkok",src:"肥波 3.5/5"},
@@ -212,7 +213,9 @@ const PLAN={
  1:[
   ["09:45","t","抵達 BKK 蘇凡納布機場","入境、領行李。機場快線到 Makkasan 轉 MRT Phetchaburi → Sukhumvit，或直接叫 Grab"],
   ["12:00","canopy","","先寄放行李"],
-  ["12:30","asoklunch","","你排的午餐"],
+  ["12:30","pier21","","從飯店走幾分鐘。先在櫃檯儲值一張卡，點餐刷卡，沒用完可以退。最快吃到，下雨也不怕"],
+  ["","rungrueang","","想吃麵的話：BTS Asok → Phrom Phong 1 站再走 5 分鐘，營業到下午"],
+  ["","emquartier","","去吃榮泰的話順路，同一站"],
   ["15:00","canopy","","Check-in，休息 30 分鐘"],
   ["15:40","t","BTS Asok → Chit Lom","3 站，約 8 分鐘，Chit Lom 站有天橋直通 CentralWorld"],
   ["16:00","centralworld","","逛到 18:00"],
@@ -285,7 +288,6 @@ const SPARE=[
   {k:"floral",why:"Day 4 早上在 Tha Tien 附近還有時間的話"},
   {k:"goang",why:"在 Pratunam，Day 1 逛完 CentralWorld 走路約 10 分鐘"},
   {k:"bunloet",why:"Day 2 在老城還吃得下的話，17:00 收"},
-  {k:"rungrueang",why:"離 Asok 一站，Day 1 午餐可以選這間"},
   {k:"roots",why:"想在 Sukhumvit 喝咖啡的話"},
   {k:"jeho",why:"深夜才熱鬧，哪天晚上還餓就去"},
   {k:"tang",why:"跟 Jeh O 同一條街，可以一起吃"},
@@ -321,7 +323,7 @@ function drawMap(){
   for(const [k,p] of Object.entries(SPOTS)){
     const x=px(p.lng),y=py(p.lat);
     const lx=(k==="thipsamai"||k==="cowboy"||k==="cafe2")?x+13:x+13, ly=(k==="thipsamai")?y+14:(k==="jayfai"?y-8:y+4);
-    h+=`<g class="pin" data-day="${p.day}" data-k="${k}" tabindex="0"><title>${p.name}</title><circle cx="${x}" cy="${y}" r="10" fill="${col(p.day)}"/><text class="n" x="${x}" y="${y}">${p.n}</text>${p.opt||["asoklunch","canopy","millennium","vivi","bluewhale","mahanakhon","timnomsod","petitpeyton","banbat","levels"].includes(k)?"":`<text class="maplabel" x="${lx}" y="${ly}">${p.name.split(" ")[0]}</text>`}</g>`;
+    h+=`<g class="pin" data-day="${p.day}" data-k="${k}" tabindex="0"><title>${p.name}</title><circle cx="${x}" cy="${y}" r="10" fill="${col(p.day)}"/><text class="n" x="${x}" y="${y}">${p.n}</text>${p.opt||["pier21","emquartier","canopy","millennium","vivi","bluewhale","mahanakhon","timnomsod","petitpeyton","banbat","levels"].includes(k)?"":`<text class="maplabel" x="${lx}" y="${ly}">${p.name.split(" ")[0]}</text>`}</g>`;
   }
   s.innerHTML=h;
   s.querySelectorAll(".pin").forEach(g=>{
